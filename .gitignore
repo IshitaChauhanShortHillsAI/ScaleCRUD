@@ -1,0 +1,7 @@
+.env
+__pycache__
+adult10m.csv
+adult10m.csv.gz
+migrations/
+.venv/
+crudx10m/adult10m.csv
