@@ -104,6 +104,19 @@ class PersonViewSet(viewsets.ModelViewSet):
         females_count = self.queryset.filter(sex='Female').count()
         return Response({"females_count": females_count})
     
+    @action(detail=False, methods=['get'], url_path='get_employement_details')
+    def get_employement_details_by_person_id(self, request, pk=None):
+        id = request.query_params.get('id')
+        if id is None:
+            return Response(status=400,data={"error": "id is required"})
+        
+        if Person.objects.filter(id=id).count() == 0:
+            return Response(status=404,data={"error": "Person not found"})
+        
+        employment_details = self.queryset.get(id=int(id)).employment_details
+        return Response(EmploymentDetailsSerializer(employment_details).data)
+        
+    
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = EmploymentDetails.objects.all()
     serializer_class = EmploymentDetailsSerializer
